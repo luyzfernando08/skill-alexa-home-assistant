@@ -23,10 +23,15 @@ Use o Home Assistant Assist Conversation na Alexa 😊
      home_assistant_url=https://YOUR-HOME-ASSISTANT-URL:8123/api/conversation/process
      home_assistant_token=YOUR-HOME-ASSISTANT-TOKEN
      home_assistant_agent_id=YOUR-AGENT-ID
+     alexa_speak_output=Pronto
+     alexa_speak_waiting=Precisa de mais alguma coisa?
+
      ```
    - **home_assistant_url**: URL da API de conversação do seu Home Assistant (incluindo a porta padrão 8123).
    - **home_assistant_token**: Token de acesso de longa duração do seu Home Assistant.
    - **home_assistant_agent_id**: ID do agente de conversação configurado no seu Home Assistant.
+   - **alexa_speak_output**: Texto que a Alexa irá pronunciar após a ativação da Skill.
+   - **alexa_speak_waiting**: Texto que a Alexa irá pronunciar caso não seja falado nenhum comando.
 
 4. Salve as alterações.
 

@@ -5,7 +5,11 @@
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
-          "samples": []
+          "samples": [
+            "não",
+            "valeu",
+            "obrigado"
+          ]
         },
         {
           "name": "AMAZON.HelpIntent",
@@ -20,7 +24,7 @@
           "samples": []
         },
         {
-          "name": "GptQueryIntent",
+          "name": "HomeAssistantQueryIntent",
           "slots": [
             {
               "name": "query",

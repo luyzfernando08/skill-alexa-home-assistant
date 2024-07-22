@@ -32,10 +32,11 @@ home_assistant_url = config.get("home_assistant_url")
 home_assistant_token = config.get("home_assistant_token")
 home_assistant_agent_id = config.get("home_assistant_agent_id")
 alexa_speak_output = config.get("alexa_speak_output")
+alexa_speak_waiting = config.get("alexa_speak_waiting")
 
 # Verificação de configuração
-if not home_assistant_url or not home_assistant_token or not home_assistant_agent_id or not alexa_speak_output:
-    raise ValueError("alexa_speak_output, home_assistant_url, home_assistant_token ou home_assistant_agent_id não configurados corretamente")
+if not home_assistant_url or not home_assistant_token or not home_assistant_agent_id or not alexa_speak_output or not alexa_speak_waiting:
+    raise ValueError("alexa_speak_waiting, alexa_speak_output, home_assistant_url, home_assistant_token ou home_assistant_agent_id não configurados corretamente")
 
 # Variável global para armazenar o conversation_id
 conversation_id = None
@@ -49,16 +50,16 @@ class LaunchRequestHandler(AbstractRequestHandler):
         conversation_id = None  # Reseta o conversation_id para uma nova sessão
         return handler_input.response_builder.speak(alexa_speak_output).ask(alexa_speak_output).response
 
-class GptQueryIntentHandler(AbstractRequestHandler):
+class HomeAssistantQueryIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("GptQueryIntent")(handler_input)
+        return ask_utils.is_intent_name("HomeAssistantQueryIntent")(handler_input)
 
     def handle(self, handler_input):
         query = handler_input.request_envelope.request.intent.slots["query"].value
         logger.info(f"Query received: {query}")
         response = process_conversation(query)
         logger.info(f"Response generated: {response}")
-        return handler_input.response_builder.speak(response).ask("Você pode fazer uma nova pergunta ou falar: sair.").response
+        return handler_input.response_builder.speak(response).ask(alexa_speak_waiting).response
 
 def process_conversation(query):
     global conversation_id
@@ -140,7 +141,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 
 sb = SkillBuilder()
 sb.add_request_handler(LaunchRequestHandler())
-sb.add_request_handler(GptQueryIntentHandler())
+sb.add_request_handler(HomeAssistantQueryIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
